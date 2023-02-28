@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace MyApp // Note: actual namespace depends on the project name.
 {
@@ -6,22 +7,6 @@ namespace MyApp // Note: actual namespace depends on the project name.
         static void Main(string[] args) {
 
             string[] names = new[] { "Michael", "Pam", "Jim", "Dwight", "Angela", "Kevin", "Toby", "Creed" };
-
-
-            var query4 = names.Where(name => name.Length > 4)
-                              .OrderBy(name => name.Length);
-
-            Console.WriteLine("Names longuer than four letters and order by length");
-
-            Console.WriteLine("**********************************************************");
-
-            foreach (var name in query4) {
-
-
-                Console.WriteLine(name);
-            }
-
-
 
 
             Console.WriteLine("Deferred execution ");
@@ -53,13 +38,15 @@ namespace MyApp // Note: actual namespace depends on the project name.
 
             Console.WriteLine("**********************************************************");
 
+            //ThenBy ordonne par ordre alphabetic
 
-            var query5 = names.Where(name => name.Length > 4 )
+            IOrderedEnumerable<string> query5 = names.Where(name => name.Length > 4 )
                               .OrderBy(name => name.Length)
-                              //ThenBy ordonne par ordre alphabetic
                               .ThenBy(name => name);
+                              
 
             Console.WriteLine("Names longuer than four letters and order by length");
+
 
             Console.WriteLine("**********************************************************");
 
@@ -67,6 +54,25 @@ namespace MyApp // Note: actual namespace depends on the project name.
                 
                 
                 Console.WriteLine(name);
+            }
+            Console.WriteLine("*************************  Filtering by type   *********************************");
+
+            
+
+            List<Exception> exceptions = new (){ new ArgumentException(),
+                                                              new SystemException(),
+                                                              new IndexOutOfRangeException(),
+                                                              new InvalidOperationException(),
+                                                              new NullReferenceException(),
+                                                              new OverflowException(),
+                                                              new DivideByZeroException(),
+                                                              new ApplicationException()
+            };
+
+            IEnumerable<ArithmeticException> arithmeticExceptionQuery = exceptions.OfType<ArithmeticException>();
+
+            foreach(var exec in arithmeticExceptionQuery) {
+                Console.WriteLine(exec);
             }
 
         }
